@@ -1,19 +1,52 @@
 <template>
-<div class="container">
+    <div v-if="loading" class="loadData">
+    <div class="loader"></div>
+    </div>
+    <div class="container" v-else>
     <div class="profile">
-        <img src="../assets/images/profile.jpeg" height="250"/>
+        <img :src="profileImg" height="250"/>
     </div>
     <div class="name">
-        <h1>Welcome, Palak Zalavadia!</h1>
+        <h1>Welcome, {{profile.displayName}}!</h1>
     </div>
-    <div class="username">
-        <h4>palak.z@simformsolutions.com</h4>
+    <div class="email">
+        <h4>{{profile.mail}}</h4>
     </div>
-      <div class="button">
+      <div class="username">
+        <h2>{{profile.jobTitle}}</h2>
+    </div>
+    <div class="phone">
+        <h4>Phone no. : {{profile.mobilePhone}}</h4>
+    </div>
+
+      <div class="button" @click="logout">
             <button class="btn">Logout</button>
     </div>
 </div>
 </template>
+<script setup>
+const {$profileInfo,$profileImg,$logout} = useNuxtApp()
+const profile = ref()
+const profileImg = ref()
+const loading = ref(true)
+
+const logout =async ()=>{
+    await $logout()
+    await navigateTo('/')
+
+}
+
+
+
+onMounted(async()=>{
+    loading.value = true
+    const data = await $profileInfo()
+    profile.value = data
+    const img = await $profileImg()
+    profileImg.value = img
+    loading.value = false
+})
+</script>
 <style scoped>
 .container{
     display: flex;
@@ -26,11 +59,24 @@ img{
     border-radius: 50%;
     border: 6px solid rgb(249, 186, 186);
     padding: 6px;
+    box-shadow: -2px 2px 20px 12px rgba(251, 251, 251, 0.75);
 }
 
 h1{
     margin-bottom: 0px;
     font-weight: normal;
+    text-align: center;
+}
+
+.email h4{
+     margin-bottom: 0;
+}
+h4{
+ color: #7d7d7d;
+
+}
+h2{
+    margin-bottom: 0;
 }
 .btn{
     padding: 15px 40px 15px 40px;
@@ -43,5 +89,29 @@ h1{
     color: white;
     font-weight: bold;
     font-family: "Roboto", sans-serif;
+}
+.loadData{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+.loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #f77777;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
