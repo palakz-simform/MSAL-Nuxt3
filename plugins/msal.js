@@ -54,33 +54,37 @@ export default defineNuxtPlugin(async () => {
         return json
     }
     const profileImg = async () => {
-        let profileImageResponse = await fetch(
-            `https://graph.microsoft.com/v1.0/me/photo/$value`,
-            {
-                headers: {
-                    Authorization: `Bearer ${tokenResponse.accessToken}`,
-                },
-            }
-        )
-        let imageUrl
-        console.log(profileImageResponse);
-        if (profileImageResponse.ok) {
-            let blob = await profileImageResponse.blob()
-            imageUrl = URL.createObjectURL(blob)
-
-        } else {
-            console.error(
-                'Failed to fetch profile image:',
-                profileImageResponse.statusText
+        try {
+            let profileImageResponse = await fetch(
+                `https://graph.microsoft.com/v1.0/me/photo/$value`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${tokenResponse.accessToken}`,
+                    },
+                }
             )
+            let imageUrl
+            if (profileImageResponse.ok) {
+                let blob = await profileImageResponse.blob()
+                imageUrl = URL.createObjectURL(blob)
+
+            } else {
+                console.error(
+                    'Failed to fetch profile image:',
+                    profileImageResponse.statusText
+                )
+            }
+            return { data: imageUrl, error: null }
         }
-        return imageUrl
+        catch (error) {
+            return { data: null, error: error }
+        }
     }
     const logout = async () => {
-        const accounts = getAccounts()
-        const homeAccountId = accounts[0]
-        await msal.logoutRedirect({ account: homeAccountId })
-        console.log('Loggedout')
+        const token = await acquireTokenSilent()
+        const homeAccountId = token.account.homeAccountId
+        const currentAccount = msal.getAccount(homeAccountId)
+        await msal.logoutRedirect({ account: currentAccount })
     }
 
     return {

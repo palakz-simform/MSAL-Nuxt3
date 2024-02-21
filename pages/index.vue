@@ -3,8 +3,11 @@
     <div class="loader"></div>
     </div>
     <div class="container" v-else>
-    <div class="profile">
-        <img :src="profileImg" height="250"/>
+    <div class="profile" v-if="profileImg">
+        <img :src="profileImg" width="250"/>
+    </div>
+    <div class="initials-container" v-else>
+       <div class="initials">{{initials}}</div>
     </div>
     <div class="name">
         <h1>Welcome, {{profile.displayName}}!</h1>
@@ -18,7 +21,6 @@
     <div class="phone">
         <h4>Phone no. : {{profile.mobilePhone}}</h4>
     </div>
-
       <div class="button" @click="logout">
             <button class="btn">Logout</button>
     </div>
@@ -32,20 +34,26 @@ const loading = ref(true)
 
 const logout =async ()=>{
     await $logout()
-    await navigateTo('/')
-
 }
-
-
-
 onMounted(async()=>{
     loading.value = true
-    const data = await $profileInfo()
-    profile.value = data
-    const img = await $profileImg()
-    profileImg.value = img
+    const profileInfo = await $profileInfo()
+    profile.value = profileInfo
+    const {data,error} = await $profileImg()
+    if(data){
+        profileImg.value = data
+    }
+    if(error){
+        getInitials()
+    }
     loading.value = false
 })
+const initials = ref()
+const getInitials = () =>{
+    const fletter = profile.value.givenName.charAt(0)
+    const lletter = profile.value.surname.charAt(0)
+    initials.value = fletter+lletter
+}
 </script>
 <style scoped>
 .container{
@@ -55,11 +63,26 @@ onMounted(async()=>{
     justify-content: center;
     align-items: center ;
 }
-img{
+img,.initials-container{
     border-radius: 50%;
     border: 6px solid rgb(249, 186, 186);
     padding: 6px;
     box-shadow: -2px 2px 20px 12px rgba(251, 251, 251, 0.75);
+}
+.initials-container{
+    padding: 10px;
+}
+.initials{
+    font-size: 80px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:250px;
+    width: 250px;
+    background-color: #e2e6ff;
+    border-radius: 50%;
+    color: rgb(53, 53, 82);
 }
 
 h1{
