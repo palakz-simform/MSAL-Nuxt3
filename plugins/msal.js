@@ -11,28 +11,25 @@ export default defineNuxtPlugin(async () => {
     const msal = new PublicClientApplication(config)
     await msal.initialize()
 
+    let tokenResponse
     const login = async () => {
         var loginRequest = {
             scopes: ['user.read'],
         }
         try {
             let loginResponse = await msal.loginPopup(loginRequest)
-            console.log('Login Response', loginResponse)
             return loginResponse
         }
         catch (err) {
-            let loginResponse = await msal.loginPopup(loginRequest)
-            return loginResponse
+            console.log(err);
         }
     }
     const getAccounts = () => {
         return msal.getAllAccounts()
     }
-    let tokenResponse
     const acquireTokenSilent = async () => {
         const account = msal.getAllAccounts()
         if (account.length > 0) {
-
             let tokenRequest = {
                 scopes: ['user.read'],
                 account: account[0]
@@ -97,6 +94,5 @@ export default defineNuxtPlugin(async () => {
             logout
         }
     }
-
 })
 

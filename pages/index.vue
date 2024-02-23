@@ -18,7 +18,7 @@
       <div class="username">
         <h2>{{profile.jobTitle}}</h2>
     </div>
-    <div class="phone">
+    <div class="phone" v-if="profile.mobilePhone">
         <h4>Phone no. : {{profile.mobilePhone}}</h4>
     </div>
       <div class="button" @click="logout">
