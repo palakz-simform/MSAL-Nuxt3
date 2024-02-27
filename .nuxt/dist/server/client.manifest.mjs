@@ -1,0 +1,1 @@
+export { default } from "file:///home/palak/Documents/Simform%20Projects/3%20Blog/msal-nuxt/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
