@@ -50,9 +50,11 @@ onMounted(async()=>{
 })
 const initials = ref()
 const getInitials = () =>{
-    const fletter = profile.value.givenName.charAt(0)
-    const lletter = profile.value.surname.charAt(0)
+    const nameArray = profile.value.displayName.split(' ')
+    const fletter = nameArray[0].charAt(0)
+    const lletter = nameArray[1].charAt(0)
     initials.value = fletter+lletter
+    console.log(initials.value);
 }
 </script>
 <style scoped>
@@ -113,6 +115,9 @@ h2{
     font-weight: bold;
     font-family: "Roboto", sans-serif;
 }
+.button{
+    margin-top: 20px;
+}
 .loadData{
     display: flex;
     justify-content: center;
@@ -125,7 +130,7 @@ h2{
   border-top: 8px solid #f77777;
   width: 60px;
   height: 60px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
+  -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
 @-webkit-keyframes spin {
