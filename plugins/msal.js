@@ -11,9 +11,8 @@ export default defineNuxtPlugin(async () => {
     const msal = new PublicClientApplication(config)
     await msal.initialize()
 
-    let tokenResponse
     const login = async () => {
-        var loginRequest = {
+        let loginRequest = {
             scopes: ['user.read'],
         }
         try {
@@ -24,9 +23,7 @@ export default defineNuxtPlugin(async () => {
             console.log(err);
         }
     }
-    const getAccounts = () => {
-        return msal.getAllAccounts()
-    }
+    let tokenResponse
     const acquireTokenSilent = async () => {
         const account = msal.getAllAccounts()
         if (account.length > 0) {
@@ -40,6 +37,9 @@ export default defineNuxtPlugin(async () => {
         else {
             return null
         }
+    }
+    const getAccounts = () => {
+        return msal.getAllAccounts()
     }
     const profileInfo = async () => {
         let payload = await fetch('https://graph.microsoft.com/v1.0/me', {
@@ -87,8 +87,8 @@ export default defineNuxtPlugin(async () => {
     return {
         provide: {
             login,
-            getAccounts,
             acquireTokenSilent,
+            getAccounts,
             profileInfo,
             profileImg,
             logout
