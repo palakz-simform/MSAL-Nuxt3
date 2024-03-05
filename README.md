@@ -1,75 +1,48 @@
-# Nuxt 3 Minimal Starter
+# MSAL Authentication in Nuxt 3
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Overview
+This guide explains how to set up authentication using Microsoft Authentication Library (MSAL) in a Nuxt 3 project.
 
-## Setup
+## Prerequisites
+- Node.js installed on your machine
+- A Microsoft Azure account
+- Basic understanding of Nuxt.js
 
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Installation
+- Install Nuxt 3 and create a new project.
+- Install MSAL using npm or yarn:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npm install @azure/msal-browser
 ```
-
-## Production
-
-Build the application for production:
-
+or 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+yarn add @azure/msal-browser
 ```
+## Configuration
 
-Locally preview production build:
+Define your MSAL configuration in a `plugins/msal.js` file.
 
+## Usage
+
+- Create an authentication service to encapsulate MSAL functionality.
+- Use the authentication service in your Nuxt 3 application where authentication is required.
+
+
+## Build Setup
 ```bash
-# npm
-npm run preview
+ # install dependencies
+  npm install
 
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+  # serve with hot reload
+  npm run dev
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Documentation
+
+- [MSAL Documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview)
+- [Nuxt 3 Documentation](https://v3.nuxtjs.org/)
+
+## Live Link
+
+You can see the demo here : [MSAL Nuxt3](https://msal-nuxt3.netlify.app/)
